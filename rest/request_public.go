@@ -36,6 +36,7 @@ func (c *Client) GetTickerInformation(params *openapi.GetTickerInformationParams
 		fmt.Println(err.Error())
 		return nil, err
 	}
+	fmt.Println(string(assets.Body))
 
 	return assets.JSON200.Result, nil
 }

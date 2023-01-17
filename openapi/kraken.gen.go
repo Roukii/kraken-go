@@ -833,7 +833,7 @@ type Closed struct {
 	Trigger *ClosedTrigger `json:"trigger,omitempty"`
 
 	// Userref User reference id
-	Userref *string `json:"userref,omitempty"`
+	Userref *int `json:"userref,omitempty"`
 
 	// Vol Volume of order (base currency)
 	Vol *string `json:"vol,omitempty"`
