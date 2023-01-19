@@ -10,13 +10,10 @@ func (c *Client) GetTradableAssetPairs(params *openapi.GetTradableAssetPairsPara
 	request, err := openapi.NewGetTradableAssetPairsRequest(ENDPOINT+"/"+VERSION+"/", params)
 	response, err := c.queryPublic(*request)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return nil, err
 	}
-	fmt.Println("response " + response.Status)
 	assets, err := openapi.ParseGetTradableAssetPairsResponse(response)
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
 	fmt.Println(string(assets.Body))
@@ -27,13 +24,25 @@ func (c *Client) GetTickerInformation(params *openapi.GetTickerInformationParams
 	request, err := openapi.NewGetTickerInformationRequest(ENDPOINT+"/"+VERSION+"/", params)
 	response, err := c.queryPublic(*request)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return nil, err
 	}
-	fmt.Println("response " + response.Status)
 	assets, err := openapi.ParseGetTickerInformationResponse(response)
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
+	}
+	fmt.Println(string(assets.Body))
+
+	return assets.JSON200.Result, nil
+}
+
+func (c *Client) GetAssets() (*map[string]openapi.Info, error) {
+	request, err := openapi.NewGetAssetInfoRequest(ENDPOINT+"/"+VERSION+"/", &openapi.GetAssetInfoParams{})
+	response, err := c.queryPublic(*request)
+	if err != nil {
+		return nil, err
+	}
+	assets, err := openapi.ParseGetAssetInfoResponse(response)
+	if err != nil {
 		return nil, err
 	}
 	fmt.Println(string(assets.Body))

@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Roukii/kraken-go/rest/generic"
 )
 
 // queryPrivate executes a private method query
@@ -33,7 +32,6 @@ func (c *Client) queryPrivate(request http.Request) (*http.Response, error) {
 	// Add Key and signature to request headers
 	request.Header.Add("API-Key", c.Auth.Key)
 	request.Header.Add("API-Sign", signature)
-	fmt.Println("do request")
 	return c.KrakenClient.Client.Do(&request)
 }
 

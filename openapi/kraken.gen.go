@@ -8464,7 +8464,6 @@ func ParseAddOrderResponse(rsp *http.Response) (*AddOrderResponse, error) {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest Add2
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			fmt.Println("body : " + string(bodyBytes))
 			return nil, err
 		}
 		response.JSON200 = &dest

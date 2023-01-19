@@ -10,13 +10,10 @@ func (c *Client) GetAccountBalance() (*openapi.Balance, error) {
 	request, err := openapi.NewGetAccountBalanceRequestWithFormdataBody(ENDPOINT+"/"+VERSION+"/", openapi.GetAccountBalanceFormdataRequestBody{})
 	response, err := c.queryPrivate(*request)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return nil, err
 	}
-	fmt.Println("response " + response.Status)
 	assets, err := openapi.ParseGetAccountBalanceResponse(response)
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
 	fmt.Println(string(assets.Body))
@@ -28,18 +25,14 @@ func (c *Client) GetAccountBalance() (*openapi.Balance, error) {
 func (c *Client) CreateOrder(params openapi.Add) (string, error) {
 	request, err := openapi.NewAddOrderRequestWithFormdataBody(ENDPOINT+"/"+VERSION+"/", params)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return "", err
 	}
 	response, err := c.queryPrivate(*request)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return "", err
 	}
-	fmt.Println("response " + response.Status)
 	assets, err := openapi.ParseAddOrderResponse(response)
 	if err != nil {
-		fmt.Println(err.Error())
 		return "", err
 	}
 	fmt.Println(string(assets.Body))
@@ -53,18 +46,14 @@ func (c *Client) GetOrderStatus(orderId string) (*openapi.Closed, error) {
 		Txid:    orderId,
 	})
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return nil, err
 	}
 	response, err := c.queryPrivate(*request)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return nil, err
 	}
-	fmt.Println("response " + response.Status)
 	assets, err := openapi.ParseGetOrdersInfoResponse(response)
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
 	fmt.Println(string(assets.Body))
@@ -80,7 +69,6 @@ func (c *Client) CancelOrder(orderId string) (bool, error) {
 	var txid openapi.Cancel_Txid
 	err := txid.UnmarshalJSON([]byte(orderId))
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return false, err
 	}
 	request, err := openapi.NewCancelOrderRequestWithFormdataBody(ENDPOINT+"/"+VERSION+"/", openapi.Cancel{
@@ -89,13 +77,10 @@ func (c *Client) CancelOrder(orderId string) (bool, error) {
 	})
 	response, err := c.queryPrivate(*request)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return false, err
 	}
-	fmt.Println("response " + response.Status)
 	assets, err := openapi.ParseCancelOrderResponse(response)
 	if err != nil {
-		fmt.Println(err.Error())
 		return false, err
 	}
 	fmt.Println(string(assets.Body))
@@ -109,13 +94,10 @@ func (c *Client) GetWithdrawHistories() (*openapi.Balance, error) {
 	})
 	response, err := c.queryPrivate(*request)
 	if err != nil {
-		fmt.Println("err : " + err.Error())
 		return nil, err
 	}
-	fmt.Println("response " + response.Status)
 	assets, err := openapi.ParseGetStatusRecentWithdrawalsResponse(response)
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
 	fmt.Println(string(assets.Body))
