@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Roukii/kraken-go/rest/generic"
 )
 
 // queryPrivate executes a private method query
