@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Roukii/kraken-go/openapi"
@@ -21,7 +22,6 @@ func (c *Client) GetAccountBalance() (*openapi.Balance, error) {
 	return assets.JSON200.Result, nil
 }
 
-
 func (c *Client) CreateOrder(params openapi.Add) (string, error) {
 	request, err := openapi.NewAddOrderRequestWithFormdataBody(ENDPOINT+"/"+VERSION+"/", params)
 	if err != nil {
@@ -40,10 +40,9 @@ func (c *Client) CreateOrder(params openapi.Add) (string, error) {
 	return (*assets.JSON200.Result.Txid)[0], nil
 }
 
-
 func (c *Client) GetOrderStatus(orderId string) (*openapi.Closed, error) {
 	request, err := openapi.NewGetOrdersInfoRequestWithFormdataBody(ENDPOINT+"/"+VERSION+"/", openapi.Query{
-		Txid:    orderId,
+		Txid: orderId,
 	})
 	if err != nil {
 		return nil, err
@@ -64,7 +63,6 @@ func (c *Client) GetOrderStatus(orderId string) (*openapi.Closed, error) {
 	return &closed, nil
 }
 
-
 func (c *Client) CancelOrder(orderId string) (bool, error) {
 	var txid openapi.Cancel_Txid
 	err := txid.UnmarshalJSON([]byte(orderId))
@@ -83,8 +81,11 @@ func (c *Client) CancelOrder(orderId string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	if assets.JSON200.Error != nil && len(*assets.JSON200.Error) != 0 {
+		return false, errors.New((*assets.JSON200.Error)[0][0])
+	}
 	fmt.Println(string(assets.Body))
-	return 	(*assets.JSON200.Result.Count) > 0, nil
+	return (*assets.JSON200.Result.Count) > 0, nil
 }
 
 func (c *Client) GetWithdrawHistories() (*openapi.Balance, error) {
@@ -100,8 +101,10 @@ func (c *Client) GetWithdrawHistories() (*openapi.Balance, error) {
 	if err != nil {
 		return nil, err
 	}
+	if assets.JSON200.Error != nil && len(*assets.JSON200.Error) != 0 {
+		return nil, errors.New((*assets.JSON200.Error)[0])
+	}
 	fmt.Println(string(assets.Body))
 
 	return nil, nil
 }
-
