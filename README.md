@@ -2,7 +2,7 @@
 A go version of the kraken api generated from OpenApi doc
 
 # Warning
-Use this at your own risk, kraken's openapi file is not generated perfectly, there is quite a few modification to make to the file at each generation.
+Use this at your own risk, this project is still in test and heavily subject to modification, kraken's openapi files are not generated perfectly, there is quite a few modification to make to the file at each generation.
 I know there is nothing really optimized yet, it's work in progress.
 
 # OpenApi
