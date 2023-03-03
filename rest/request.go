@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -59,23 +58,20 @@ func (c *Client) do(request http.Request, reqURL string, values url.Values, head
 		return nil, err
 	}
 	if res.StatusCode != 200 {
-		var r interface{}
 		var data []byte
 		res.Body.Read(data)
-		if err := json.Unmarshal(data, &r); err != nil {
+		if string(data)[0] == 'E' && strings.Contains(string(data), ":") {
+			dataStr := string(data)
+			return nil, &generic.APIError{
+				Status:  res.StatusCode,
+				Message: strings.Split(dataStr, ":")[1],
+			}
+		} else {
 			return nil, &generic.APIError{
 				Status:  res.StatusCode,
 				Message: fmt.Sprintf("%+v\n", string(data)),
 			}
 		}
-		if resp, ok := r.(generic.APIError); ok {
-			return nil, resp
-		}
-		return nil, &generic.APIError{
-			Status:  res.StatusCode,
-			Message: fmt.Sprintf("%+v\n", string(data)),
-		}
-
 	}
 	return res, nil
 }

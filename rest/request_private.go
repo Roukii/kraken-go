@@ -36,7 +36,9 @@ func (c *Client) CreateOrder(params openapi.Add) (string, error) {
 		return "", err
 	}
 	fmt.Println(string(assets.Body))
-
+	if (*assets.JSON200.Error) != nil && len(*assets.JSON200.Error) > 0 {
+		return "", errors.New((*assets.JSON200.Error)[0])
+	}
 	return (*assets.JSON200.Result.Txid)[0], nil
 }
 
